@@ -1,12 +1,21 @@
 import gspread
 
 class Store:
-    def __init__(self, spreadsheet_id, credentials):
+    def __init__(self, spreadsheet_id, credentials, worksheet_num=0):
         self._gspread_client = gspread.authorize(credentials)
-        self._spreadsheet = self._gspread_client.open_by_key(spreadsheet_id)
+
+        spreadsheet = self._gspread_client.open_by_key(spreadsheet_id)
+        self._worksheet = spreadsheet.get_worksheet(worksheet_num)
+
+        # The first row of the spreadsheet serves as the schema
+        self.schema = self._worksheet.row_values(1)
 
     def get(self, index):
-        pass
+        # NOTE : this returns the schema if index is 0
+        row = self._worksheet.row_values(index)
+
+        # Ignore empty values
+        return { c,v for c,v in zip(schema, row) if v != '' }
 
     def push(self, data):
         pass
