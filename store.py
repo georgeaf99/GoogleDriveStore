@@ -15,10 +15,12 @@ class Store:
         row = self._worksheet.row_values(index)
 
         # Ignore empty values
-        return { c,v for c,v in zip(schema, row) if v != '' }
+        return {c,v for c,v in zip(schema, row) if v != ''}
 
     def push(self, data):
-        pass
+        row = [data.get(c) or '' for c in row]
+
+        self._worksheet.append_row(values)
 
     def update(self, index, data):
         pass
