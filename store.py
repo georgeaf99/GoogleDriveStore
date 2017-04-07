@@ -22,8 +22,23 @@ class Store:
 
         self._worksheet.append_row(values)
 
+        # TODO : return an index
+
     def update(self, index, data):
-        pass
+        updated = [data.get(c) for c in row]
+        
+        cells = self._worksheet.range(
+            first_row=index,
+            first_col=1,
+            last_row=index,
+            last_col=1+len(self.schema)
+        )
+
+        for new, old in zip(updated, cells):
+            if new:
+                old.value = new
+        
+        self._worksheet.update_cells(cells)
 
     def delete(self, index):
         pass
